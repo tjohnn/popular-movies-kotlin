@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="movie_backdrop">Movie Backdrop</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="retry">Retry</string>
+    <string name="swipe_to_retry">Swipe to retry.</string>
+    <string name="sort_by">Sort By</string>
+    <string name="sort_by_rating">Sort by rating</string>
+    <string name="sort_by_popularity">Sort by popularity</string>
+    <string name="my_favorites">My Favorites</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailer_item_icon">Trailer item icon</string>
+    <string name="select_sorting_type">Select sorting type</string>
+    <string name="empty_movie_list">Empty movie list</string>
+</resources>

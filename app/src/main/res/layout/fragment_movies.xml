@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.tjohnn.popularmovieskotlin.ui.movies.MoviesViewModel"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.tjohnn.popularmovieskotlin.util.AutoFitRecyclerView
+                android:id="@+id/rv_movies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnWidth="150dp"
+                app:items="@{viewModel.movies}"
+                android:visibility="@{viewModel.pageErrorMessage == null || viewModel.pageErrorMessage.isEmpty() ? View.VISIBLE : View.GONE}"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
+        <TextView android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            tools:text="Error loading movies list. \nSwipe to retry!"
+            android:text="@{viewModel.pageErrorMessage}"
+            android:visibility="@{viewModel.pageErrorMessage == null || viewModel.pageErrorMessage.isEmpty() ? View.GONE : View.VISIBLE}"/>
+        <FrameLayout android:id="@+id/progress_bar_wrapper"
+            android:visibility="@{viewModel.isLoading ?  View.VISIBLE : View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <ProgressBar
+                android:layout_gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/progress_bar_wrapper_more"
+            android:visibility="@{viewModel.isLoadingMore ? View.VISIBLE : View.GONE}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_gravity="bottom"
+
+            android:background="@color/colorWhite">
+            <ProgressBar
+                android:layout_gravity="center"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+        </FrameLayout>
+    </FrameLayout>
+</layout>
