@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.navigation.fragment.NavHostFragment
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.squareup.picasso.Picasso
@@ -22,6 +23,7 @@ import com.tjohnn.popularmovieskotlin.databinding.FragmentMoviesBinding
 import com.tjohnn.popularmovieskotlin.ui.MainActivity
 import com.tjohnn.popularmovieskotlin.util.AutoFitRecyclerView
 import com.tjohnn.popularmovieskotlin.util.Constants
+import com.tjohnn.popularmovieskotlin.util.EventWrapper
 import dagger.android.support.DaggerFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -132,24 +134,40 @@ class MoviesFragment : DaggerFragment(), MoviesAdapter.MovieItemLister, SwipeRef
             }
             preferenceHelper.updateSortingOrder(order)
             sortOrder = order
-            subscribeToMovieData(true)
+            subscribeToMovieData(true, false)
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
-    private fun subscribeToMovieData(forceRefresh: Boolean = false) {
+    private fun subscribeToMovieData(forceRefresh: Boolean = false, isInitialCall: Boolean = true) {
         if (Constants.BY_FAVOURITE == sortOrder)  {
             moviesViewModel.loadFavoriteMovies()
         } else {
-            moviesViewModel.loadMovies(sortOrder, forceRefresh, true)
+            moviesViewModel.loadMovies(sortOrder, forceRefresh, isInitialCall)
         }
+
+        // set #isLoading to prevent loading more data while a request is going on
+        moviesViewModel.isLoading.observe(this, Observer{
+            isLoading = it ?: false
+        })
+        moviesViewModel.isLoading.observe(this, Observer{
+            isLoading = it ?: false
+        })
+
+        moviesViewModel.openMovieDetail.observe(this, Observer<EventWrapper<Long>> {
+            it?.getContentIfNotHandled()?.let {
+                val bundle = Bundle()
+                bundle.putLong("movieId", it)
+                NavHostFragment.findNavController(this).navigate(R.id.action_moviesFragment_to_movieDetailFragment, bundle)
+            }
+        })
     }
 
 
-    override fun onMovieItemClicked(movieId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onMovieItemClicked(movieId: Long) {
+        moviesViewModel.movieItemClicked(movieId)
     }
 
     override fun onRefresh() {

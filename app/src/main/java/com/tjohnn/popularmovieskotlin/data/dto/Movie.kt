@@ -1,7 +1,7 @@
 package com.tjohnn.popularmovieskotlin.data.dto
 
 import android.arch.persistence.room.Ignore
-class Movie (
+data class Movie (
         var id: Long = 0,
         var voteAverage: Double = 0.0,
         var title: String = "",
@@ -21,6 +21,10 @@ class Movie (
     constructor(id: Long, voteAverage: Double, title: String, posterPath: String, backdropPath: String,
               originalTitle: String, overview: String, releaseDate: String):
             this(id, voteAverage, title, posterPath, backdropPath, originalTitle, overview, releaseDate, 0, null, false, false, 0.0, "")
+
+    constructor():
+            this(0, 0.0, "", "", "", "", "", "",
+                    0, null, false, false, 0.0, "")
 
     override fun toString(): String {
         return "Movie(voteCount=$voteCount, genreIds=$genreIds, id=$id, video=$video, adult=$adult, voteAverage=$voteAverage, popularity=$popularity, title='$title', postalPath='$posterPath', backdropPath='$backdropPath', originalLanguage='$originalLanguage', originalTitle='$originalTitle', overview='$overview', releaseDate='$releaseDate')"

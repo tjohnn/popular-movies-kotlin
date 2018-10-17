@@ -1,176 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite">
-    <ScrollView
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.tjohnn.popularmovieskotlin.ui.moviedetail.MovieDetailViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-        <LinearLayout
+        android:background="@color/colorWhite">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <FrameLayout
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView android:id="@+id/iv_backdrop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/movie_backdrop"
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="100dp"
-                    >
-                    <android.support.v7.widget.CardView
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_backdrop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="120dp"
-                        android:background="@color/colorWhite"
-                        android:layout_gravity="bottom"
-                        app:cardBackgroundColor="@color/colorWhite"
-                        app:cardElevation="7dp"
-                        >
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="160dp"
-                            android:layout_marginStart="160dp"
-                            >
-                            <TextView
-                                android:id="@+id/tv_title"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                tools:text="Pirate of the Carribbean Jack Sparrow"
-                                android:textStyle="bold"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:layout_marginBottom="8dp"
-                                />
-
-                            <TextView
-                                android:id="@+id/tv_rating"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/tv_title"
-                                android:textSize="12sp"
-                                tools:text="7/10" />
-                            <TextView
-                                android:id="@+id/tv_release_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/tv_rating"
-                                android:textSize="12sp"
-                                tools:text="7th of Aug, 2009" />
-
-                            <ImageView android:id="@+id/iv_favorite"
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:gravity="center"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/tv_release_date"
-                                android:src="@drawable/ic_star_border_orange_24dp"
-                                />
-                        </android.support.constraint.ConstraintLayout>
-                    </android.support.v7.widget.CardView>
-                    <ImageView
-                        android:id="@+id/iv_poster"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:contentDescription="@string/movie_backdrop"
                         android:scaleType="centerCrop"
-                        android:elevation="10dp"
-                        android:contentDescription="@string/movie_poster"
-                        />
+                        android:adjustViewBounds="true" />
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="100dp">
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="120dp"
+                            android:background="@color/colorWhite"
+                            android:layout_gravity="bottom"
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardElevation="7dp">
+
+                            <android.support.constraint.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="160dp"
+                                android:layout_marginStart="160dp">
+
+                                <TextView
+                                    android:id="@+id/tv_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    tools:text="Pirate of the Carribbean Jack Sparrow"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/colorPrimaryDark"
+                                    android:text="@{viewModel.movieLiveData.title}"
+                                    android:layout_marginBottom="8dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_rating"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_title"
+                                    android:text="@{viewModel.movieLiveData.voteAverage + `/10`}"
+                                    android:textSize="12sp"
+                                    tools:text="7/10" />
+
+                                <TextView
+                                    android:id="@+id/tv_release_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginBottom="8dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_rating"
+                                    android:textSize="12sp"
+                                    android:text="@{viewModel.movieLiveData.releaseDate}"
+                                    tools:text="7th of Aug, 2009" />
+
+                                <ImageView
+                                    android:id="@+id/iv_favorite"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="30dp"
+                                    android:gravity="center"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/tv_release_date"
+                                    app:favoriteSrc="@{viewModel.isFavourite}"
+                                    android:onClick="@{() -> viewModel.updateFavoriteMovie()}"/>
+                            </android.support.constraint.ConstraintLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <ImageView
+                            android:id="@+id/iv_poster"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"
+                            android:elevation="10dp"
+                            android:contentDescription="@string/movie_poster" />
+
+                    </FrameLayout>
                 </FrameLayout>
-            </FrameLayout>
-            <TextView android:id="@+id/tv_plot_synopsis"
-                android:layout_margin="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_border_bottom_thick"
-                android:paddingBottom="8dp"
-                tools:text="In 2013, something terrible is awakening in London's National Gallery; in 1562, a murderous plot is afoot in Elizabethan England; and somewhere in space an ancient battle reaches its devastating conclusion. All of reality is at stake as the Doctor's own dangerous past comes back to haunt him."
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp">
+
                 <TextView
+                    android:id="@+id/tv_plot_synopsis"
+                    android:layout_margin="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:text="@string/trailers"/>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_trailers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:background="@drawable/bg_border_bottom_thick"
+                    android:paddingBottom="8dp"
+                    android:text="@{viewModel.movieLiveData.overview}"
+                    tools:text="In 2013, something terrible is awakening in London's National Gallery; in 1562, a murderous plot is afoot in Elizabethan England; and somewhere in space an ancient battle reaches its devastating conclusion. All of reality is at stake as the Doctor's own dangerous past comes back to haunt him." />
 
-                </android.support.v7.widget.RecyclerView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp">
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:text="@string/reviews"/>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_reviews"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:orientation="vertical"
+                    android:layout_margin="16dp">
 
-                </android.support.v7.widget.RecyclerView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:text="@string/trailers" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_trailers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:trailerItems="@{viewModel.trailersLiveData}"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:text="@string/reviews" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_reviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:reviewItems="@{viewModel.reviewsLiveData}"
+                        />
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/progress_bar_wrapper"
+            android:visibility="@{viewModel.showLoadingIndicator ? View.VISIBLE : View.INVISIBLE}"
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="match_parent"
+            >
+
+            <ProgressBar
+                android:layout_gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/message_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/colorWhite">
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry" />
         </LinearLayout>
-    </ScrollView>
-    <FrameLayout android:id="@+id/progress_bar_wrapper"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:background="@color/colorWhite"
-        android:layout_height="match_parent">
-        <ProgressBar
-            android:layout_gravity="center"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
     </FrameLayout>
-    <LinearLayout android:id="@+id/message_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        android:background="@color/colorWhite"
-        >
-        <TextView android:id="@+id/tv_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button android:id="@+id/btn_retry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/retry"/>
-    </LinearLayout>
-</FrameLayout>
+</layout>

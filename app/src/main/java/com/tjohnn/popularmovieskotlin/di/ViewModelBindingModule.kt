@@ -2,6 +2,7 @@ package com.tjohnn.popularmovieskotlin.di
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.tjohnn.popularmovieskotlin.ui.moviedetail.MovieDetailViewModel
 import com.tjohnn.popularmovieskotlin.ui.movies.MoviesViewModel
 import dagger.Binds
 import dagger.Module
@@ -14,6 +15,11 @@ abstract class ViewModelBindingModule {
     @IntoMap
     @ViewModelKey(MoviesViewModel::class)
     abstract fun moviesViewModel(moviesViewModel: MoviesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailViewModel::class)
+    abstract fun movieDetailViewModel(movieDetailViewModel: MovieDetailViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

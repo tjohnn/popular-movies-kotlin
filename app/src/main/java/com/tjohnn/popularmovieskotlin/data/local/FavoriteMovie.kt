@@ -12,13 +12,16 @@ class FavoriteMovie {
 
     @PrimaryKey(autoGenerate = false)
     var id: Long = 0
-    var backdropPath: String
-    var posterPath: String
-    var title: String
-    var originalTitle: String
-    var overview: String
-    var releaseDate: String
-    var voteAverage: Double = 0.toDouble()
+    var backdropPath: String = ""
+    var posterPath: String = ""
+    var title: String = ""
+    var originalTitle: String = ""
+    var overview: String = ""
+    var releaseDate: String = ""
+    var voteAverage: Double = 0.0
+
+
+
 
     @Ignore
     constructor(movie: Movie) {
@@ -42,6 +45,8 @@ class FavoriteMovie {
         this.releaseDate = releaseDate
         this.voteAverage = voteAverage
     }
+
+    constructor()
 
 
 }

@@ -1,6 +1,7 @@
 package com.tjohnn.popularmovieskotlin.util
 
 import android.net.Uri
+import android.support.annotation.NonNull
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 
@@ -9,7 +10,7 @@ import java.net.SocketTimeoutException
 
 object Utils {
 
-
+    @JvmStatic
     fun processNetworkError(throwable: Throwable): String? {
         return when (throwable) {
             is HttpException -> "Server error!! Please try later."
@@ -19,8 +20,8 @@ object Utils {
         }
     }
 
-    fun getYoutubeVideoUri(videoId: String): Uri {
-        return Uri.parse("http://www.youtube.com/watch?v=$videoId")
-    }
+    @NonNull
+    @JvmStatic
+    fun getYoutubeVideoUri(videoId: String?) = Uri.parse("http://www.youtube.com/watch?v=$videoId")
 
 }

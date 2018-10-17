@@ -18,8 +18,11 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import timber.log.Timber
 
-class MoviesAdapter(private var mItems: List<Movie>, private val mListener: MovieItemLister, private val picasso: Picasso) :
-        RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class MoviesAdapter(
+        private var mItems: List<Movie>,
+        private val mListener: MovieItemLister,
+        private val picasso: Picasso
+): RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     lateinit var mContext: Context
 
@@ -64,7 +67,7 @@ class MoviesAdapter(private var mItems: List<Movie>, private val mListener: Movi
 
         init {
             ButterKnife.bind(this, itemView)
-            itemView.setOnClickListener { mListener.onMovieItemClicked(movie.id.toString()) }
+            itemView.setOnClickListener { mListener.onMovieItemClicked(movie.id) }
             posterView.tag = imageLoadCallBack
         }
 
@@ -79,6 +82,6 @@ class MoviesAdapter(private var mItems: List<Movie>, private val mListener: Movi
 
 
     interface MovieItemLister {
-        fun onMovieItemClicked(movieId: String)
+        fun onMovieItemClicked(movieId: Long)
     }
 }

@@ -7,7 +7,9 @@ import com.tjohnn.popularmovieskotlin.R
 import com.tjohnn.popularmovieskotlin.data.dto.Movie
 import com.tjohnn.popularmovieskotlin.data.repository.LocalMovieRepository
 import com.tjohnn.popularmovieskotlin.data.repository.MoviesRepository
+import com.tjohnn.popularmovieskotlin.util.AppSchedulers
 import com.tjohnn.popularmovieskotlin.util.Constants
+import com.tjohnn.popularmovieskotlin.util.EventWrapper
 import com.tjohnn.popularmovieskotlin.util.Utils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,7 +17,12 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-class MoviesViewModel @Inject constructor(private val app: Application, private var movieRepository: MoviesRepository, private var localMovieRepository: LocalMovieRepository) : AndroidViewModel(app) {
+class MoviesViewModel @Inject constructor(
+        private val app: Application,
+        private var movieRepository: MoviesRepository,
+        private var localMovieRepository: LocalMovieRepository,
+        private var appSchedulers: AppSchedulers
+) : AndroidViewModel(app) {
 
 
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
@@ -23,25 +30,25 @@ class MoviesViewModel @Inject constructor(private val app: Application, private 
     var movies: MutableLiveData<MutableList<Movie>> = MutableLiveData()
     var pageErrorMessage: MutableLiveData<String> = MutableLiveData()
     var toastMessage: MutableLiveData<String> = MutableLiveData()
+    var openMovieDetail: MutableLiveData<EventWrapper<Long>> = MutableLiveData()
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private var currentPage: Int = 0
-    private var totalPages: Int = 0
+    internal var currentPage: Int = 0
+    internal var totalPages: Int = 0
 
 
     fun loadFavoriteMovies(){
         // clear previous observables to disallow multiple observables updating movies list
         compositeDisposable.clear()
 
-        movies.value = mutableListOf()
+        movies.postValue(arrayListOf())
 
         compositeDisposable.add(localMovieRepository.getFavoriteMovies()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe{isLoading.value = true}
-                .doAfterNext{isLoading.value = false}
-                .doOnError{isLoading.value = false}
+                .doOnSubscribe{isLoading.postValue(true)}
+                .doOnError{isLoading.postValue(false)}
+                .doAfterNext{isLoading.postValue(false)}
+                .subscribeOn(appSchedulers.io())
+                .observeOn(appSchedulers.main())
                 .subscribe({
-                    movies.value?.addAll(it)
                     val list = movies.value ?: arrayListOf()
                     list.addAll(it as Iterable<Movie>)
                     updateMovies(list)
@@ -64,9 +71,13 @@ class MoviesViewModel @Inject constructor(private val app: Application, private 
     fun loadNextPage(sortType: String){
         currentPage++
         if(currentPage > totalPages) return
-        // always reload other pages
+        // always refresh other pages
         getMovies(sortType, true, currentPage)
 
+    }
+
+    fun movieItemClicked(movieId: Long){
+        openMovieDetail.value = EventWrapper(movieId)
     }
 
 
@@ -74,8 +85,8 @@ class MoviesViewModel @Inject constructor(private val app: Application, private 
         compositeDisposable.add(when(sortType) {
             Constants.BY_POPULARITY_VALUE -> movieRepository.getMoviesByPopularity(forceRefresh, page)
             else -> movieRepository.getMoviesByRating(forceRefresh, page)
-        }.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        }.subscribeOn(appSchedulers.io())
+                .observeOn(appSchedulers.main())
                 .doOnSubscribe{when(page){
                     1 -> isLoading.value = true
                     else -> isLoadingMore.value = true
@@ -89,12 +100,11 @@ class MoviesViewModel @Inject constructor(private val app: Application, private 
                     else -> isLoadingMore.value = false
                 }}
                 .subscribe({
-                    currentPage = it.page
+                    // currentPage = it.page
                     totalPages = it.totalPages
                     val list = movies.value ?: arrayListOf()
                     list.addAll(it.results as Iterable<Movie>)
                     updateMovies(list)
-                    Timber.d(movies.value.toString())
 
                 }, {
                     when (currentPage) {
@@ -106,7 +116,7 @@ class MoviesViewModel @Inject constructor(private val app: Application, private 
     }
 
     private fun updateMovies(list: MutableList<Movie>) {
-        movies.postValue(list)
+        movies.value = list
         if((movies.value?.size ?: 0) < 1){
             pageErrorMessage.value = app.getString(R.string.empty_movie_list)
         }

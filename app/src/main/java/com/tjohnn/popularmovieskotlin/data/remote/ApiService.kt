@@ -1,6 +1,7 @@
 package com.tjohnn.popularmovieskotlin.data.remote
 
 
+import android.support.annotation.Nullable
 import com.tjohnn.popularmovieskotlin.data.dto.ArrayResponse
 import com.tjohnn.popularmovieskotlin.data.dto.Movie
 import com.tjohnn.popularmovieskotlin.data.dto.Review
@@ -15,18 +16,18 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("top_rated")
-    fun getMoviesByRating(@Header("Cache-Control") cacheRule: String, @Query("page") page: Int): Single<ArrayResponse<Movie>>
+    fun getMoviesByRating(@Nullable @Header("Cache-Control") cacheRule: String, @Query("page") page: Int): Single<ArrayResponse<Movie>>
 
     @GET("popular")
-    fun getMoviesByPopularity(@Header("Cache-Control") cacheRule: String, @Query("page") page: Int): Single<ArrayResponse<Movie>>
+    fun getMoviesByPopularity(@Nullable @Header("Cache-Control") cacheRule: String, @Query("page") page: Int): Single<ArrayResponse<Movie>>
 
     @GET("{movieId}")
-    fun getMovieById(@Path("movieId") movieId: String): Single<Movie>
+    fun getMovieById(@Path("movieId") movieId: Long): Single<Movie>
 
 
     @GET("{movieId}/reviews")
-    fun getMovieReviews(@Path("movieId") movieId: String): Single<ArrayResponse<Review>>
+    fun getMovieReviews(@Path("movieId") movieId: Long): Single<ArrayResponse<Review>>
 
     @GET("{movieId}/videos")
-    fun getMovieTrailers(@Path("movieId") movieId: String): Single<ArrayResponse<Trailer>>
+    fun getMovieTrailers(@Path("movieId") movieId: Long): Single<ArrayResponse<Trailer>>
 }
